@@ -1,0 +1,13 @@
+numpy
+pandas
+librosa
+tensorflow
+scikit-learn
+streamlit
+matplotlib
+resampy
+soundfile
+keras
+joblib
+noisereduce
+tensorflow-addons  
