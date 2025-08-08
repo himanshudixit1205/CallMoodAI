@@ -45,7 +45,7 @@ pip install -r requirements.txt
 
 **Run the Streamlit App**  
 ```bash
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
 **Steps:**  
@@ -58,7 +58,7 @@ streamlit run app.py
 ## 📂 Project Structure  
 ```
 CallMoodAI/
-│-- app.py                # Streamlit app entry point
+│-- streamlit_app.py                # Streamlit app entry point
 │-- model/                # Trained model files
 │-- utils/                # Helper functions
 │-- requirements.txt      # Python dependencies
@@ -94,3 +94,4 @@ If you find a bug or want a feature, open an **issue** or submit a **PR**.
 ## 📧 Contact  
 **Author:** Himanshu Dixit  
 **GitHub:** [himanshudixit1205](https://github.com/himanshudixit1205)  
+
