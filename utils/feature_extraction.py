@@ -48,8 +48,7 @@ def extract_features(file_path, max_pad_len=MAX_PAD_LEN):
         else:
             mfccs = mfccs[:, :max_pad_len]
 
-        return mfccs
-
+        return mfccs[..., np.newaxis]
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
         return None
