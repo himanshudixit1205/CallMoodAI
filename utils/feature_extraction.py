@@ -4,17 +4,17 @@ import numpy as np
 from tqdm import tqdm
 import noisereduce as nr
 
-# Paths
+# Dataset and output directories
 DATA_PATH = 'ravdess-data'
 FEATURES_PATH = 'features'
 os.makedirs(FEATURES_PATH, exist_ok=True)
 
-# Parameters
+# Audio processing settings
 SAMPLE_RATE = 22050
 MFCC_DIM = 40
 MAX_PAD_LEN = 128
 
-# Emotion mapping
+# Mapping from RAVDESS emotion code to label
 emotion_dict = {
     '01': 'neutral',
     '02': 'calm',
@@ -26,7 +26,7 @@ emotion_dict = {
     '08': 'surprised'
 }
 
-# Feature extraction
+# Extract MFCC features from an audio file
 def extract_features(file_path, max_pad_len=MAX_PAD_LEN):
     try:
         audio, sample_rate = librosa.load(file_path, sr=SAMPLE_RATE)
@@ -37,7 +37,7 @@ def extract_features(file_path, max_pad_len=MAX_PAD_LEN):
             n_mfcc=MFCC_DIM
         )
 
-        # Pad / trim MFCC to fixed length
+        # Ensure MFCC has a fixed time length
         if mfccs.shape[1] < max_pad_len:
             pad_width = max_pad_len - mfccs.shape[1]
             mfccs = np.pad(
@@ -49,12 +49,13 @@ def extract_features(file_path, max_pad_len=MAX_PAD_LEN):
             mfccs = mfccs[:, :max_pad_len]
 
         return mfccs[..., np.newaxis]
+
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
         return None
 
 
-# Extract label from filename
+# Get emotion label from the RAVDESS filename
 def get_label_from_filename(filename):
 
     try:
@@ -76,7 +77,7 @@ def get_label_from_filename(filename):
         return None
 
 
-# Build dataset
+# Walk through dataset and extract features + labels
 def build_dataset():
 
     print("\nExtracting features from audio files...")
@@ -96,7 +97,6 @@ def build_dataset():
                 if features is not None:
 
                     X.append(features)
-
                     y.append(get_label_from_filename(file))
 
     X = np.array(X)
@@ -106,7 +106,7 @@ def build_dataset():
     print("X shape:", X.shape)
     print("y shape:", y.shape)
 
-    # Save processed dataset
+    # Save dataset for training
     np.save(os.path.join(FEATURES_PATH, 'X.npy'), X)
     np.save(os.path.join(FEATURES_PATH, 'y.npy'), y)
 
